@@ -1,0 +1,51 @@
+src/
+│
+├── app.module.ts
+├── main.ts                  
+├── common/                  
+│   ├── decorators/          
+│   ├── filters/            
+│   ├── guards/             
+│   ├── interceptors/        
+|   |__schemas/
+|   |
+│   └── pipes/               
+│
+├── config/                  
+│   ├── config.module.ts
+│   └── config.service.ts
+│
+├── modules/                
+│   ├── auth/               
+│   │   ├── auth.controller.ts
+│   │   ├── auth.module.ts
+│   │   ├── auth.service.ts
+│   │   └── dto/             
+│   └── user/                
+│       ├── user.controller.ts
+│       ├── user.module.ts
+│       ├── user.service.ts
+│       ├── dto/
+|       |__types
+|       |
+│       └── entities/        
+│
+├── database/              
+│   ├── database.module.ts
+│   ├── database.service.ts
+│   └── migrations/         
+│
+├── services/               
+│   ├── email.service.ts    
+│   └── sms.service.ts      
+│
+├── shared/                  
+│   ├── constants.ts         
+│   ├── utilities.ts        
+│   └── interfaces.ts       
+│
+├── assets/                  
+│
+└── tests/                  
+    ├── e2e/                
+    └── unit/                
