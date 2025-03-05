@@ -48,8 +48,10 @@ export class PaymobService {
                if(!updateData)
                 throw new BadRequestException("user not found")
            
+        }else{
+            throw new BadRequestException("something went wrong") 
         }
-        return data.obj.success
+        
        
     }
 }
