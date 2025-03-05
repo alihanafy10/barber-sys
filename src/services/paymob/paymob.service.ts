@@ -42,10 +42,11 @@ export class PaymobService {
     }
 
     async webhoock(data:any){
-        if(data["obj"]["success"]){
-           const updateData= await this.userModel.findOneAndUpdate( { email: data["obj"]["order"]["shipping_data"]["email"] }, 
+        if(data.obj.success){
+           const updateData= await this.userModel.findOneAndUpdate( { email: data.obj.order.shipping_data.email }, 
                 {  userRole: UserRole.BARBER  },{new:true})
-                return updateData
+               if(!updateData)
+                throw new BadRequestException("user not found")
         }
         throw new BadRequestException("pay error")
        
