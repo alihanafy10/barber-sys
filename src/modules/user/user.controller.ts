@@ -60,7 +60,7 @@ export class UserController {
       return res.status(201).json({ message: 'success', data: sessionData });
   }
 
-  @Get('webhook-paymob-session')
+  @Post('webhook-paymob-session')
   async webhoock(
     @Body() data: any,
     @Res() res: Response,
