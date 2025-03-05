@@ -42,12 +42,12 @@ export class PaymobService {
     }
 
     async webhoock(data:any){
-        if(data.status){
-           const updateData= await this.userModel.findOneAndUpdate( { email: data.order.shipping_data.email }, 
-                {  userRole: UserRole.BARBER  },{new:true})
-                return updateData
-        }
-        throw new BadRequestException("pay error")
-        
+        // if(data.status){
+        //    const updateData= await this.userModel.findOneAndUpdate( { email: data.order.shipping_data.email }, 
+        //         {  userRole: UserRole.BARBER  },{new:true})
+        //         return updateData
+        // }
+        // throw new BadRequestException("pay error")
+        return data
     }
 }
