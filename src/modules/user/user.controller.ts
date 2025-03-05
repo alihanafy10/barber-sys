@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -69,6 +69,18 @@ export class UserController {
       
       return res.status(201).json({ message: 'success'});
   }
- 
+  
+      @Get("webhook-paymob")
+      async handleResponseCallback(@Query() query: any, @Res() res: Response) {
+          // تحقق من حالة الدفع باستخدام معلمات الاستعلام
+          if (query.success === 'true') {
+              // إعادة توجيه إلى صفحة النجاح
+              return res.redirect('https://barber-sys1.vercel.app/success');
+          } else {
+              // إعادة توجيه إلى صفحة الفشل
+              return res.redirect('https://barber-sys1.vercel.app/failure');
+          }
+      }
+  
 }
 
