@@ -9,7 +9,8 @@ import { ZodValidationPipe } from "../../common/pipes";
 import {  updatePasswordBodyDto, updateUserBodyDto,  } from "./dto";
 import { createFileUploadPipe } from '../../common/utils';
 import { TupdatePasswordBodyDto, TupdateUserBodyDto } from '../../common/types';
-import { PaymobService } from '../../services';
+import { PaymobService } from '../../services/paymob/paymob.service';
+
 
 @Controller('user')
 export class UserController {

@@ -1,3 +1,2 @@
-export * from './cheak-name-exisit.service'
-export * from './api-features.service'
-export * from './paymob.service'
+export * from './cheak-name-exisit.services'
+export * from './api-features.serviced'

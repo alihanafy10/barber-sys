@@ -1,11 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
+import { Model } from 'mongoose';
+
+import { User } from '../../common/schemas';
+import { UserRole } from '../../common/shared';
 
 @Injectable()
 export class PaymobService {
-    private readonly apiKey = process.env.API_KEY;
-
-    async getPaymobToken() {
+     constructor(
+        @InjectModel(User.name) private userModel: Model<User>,
+        
+      ) {}
+      private readonly apiKey = process.env.API_KEY
+      
+    async getPaymobToken():Promise<string> {
         const response = await axios.post('https://accept.paymob.com/api/auth/tokens', {
             api_key: this.apiKey,
         });
@@ -32,8 +41,13 @@ export class PaymobService {
         return response.data; 
     }
 
-    webhoock(data:any){
-        console.log(data);
+    async webhoock(data:any){
+        if(data.obj.status){
+           const updateData= await this.userModel.findOneAndUpdate( { email: data.obj.order.shipping_data.email }, 
+                {  userRole: UserRole.BARBER  },{new:true})
+                return updateData
+        }
+        throw new BadRequestException("pay error")
         
     }
 }

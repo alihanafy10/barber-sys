@@ -6,11 +6,13 @@ import { JwtService } from "@nestjs/jwt";
 import { UserModel } from "../../common/schemas";
 import { CloudinaryModule } from "../cloudinary/cloudinary.module";
 import { EmailModule } from "../../services/email/email.module";
-import {CheakExisit, PaymobService} from "../../services"
+import { PaymobModule } from "../../services/paymob/paymob.module";
+import { CheakExisit } from "../../services";
+
 
 @Module({
-  imports: [UserModel,CloudinaryModule,EmailModule],
+  imports: [UserModel,CloudinaryModule,EmailModule,PaymobModule],
   controllers: [UserController],
-  providers: [UserService, JwtService,CheakExisit,PaymobService],
+  providers: [UserService, JwtService,CheakExisit],
 })
 export class UserModule {}
