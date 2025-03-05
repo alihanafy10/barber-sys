@@ -73,12 +73,12 @@ export class UserController {
       @Get("webhook-paymob")
       async handleResponseCallback(@Query() query: any, @Res() res: Response) {
           // تحقق من حالة الدفع باستخدام معلمات الاستعلام
-          if (query.success === 'true') {
+          if (query.success) {
               // إعادة توجيه إلى صفحة النجاح
-              return res.redirect('https://barber-sys1.vercel.app/success');
+              return res.redirect('https://fresh-cart-zeta.vercel.app/#/wishlist');
           } else {
               // إعادة توجيه إلى صفحة الفشل
-              return res.redirect('https://barber-sys1.vercel.app/failure');
+              return res.redirect('https://fresh-cart-zeta.vercel.app/#/cart');
           }
       }
   
