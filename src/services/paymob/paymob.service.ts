@@ -47,8 +47,9 @@ export class PaymobService {
                 {  userRole: UserRole.BARBER  },{new:true})
                if(!updateData)
                 throw new BadRequestException("user not found")
+           
         }
-        throw new BadRequestException("pay error")
+        return data.obj.success
        
     }
 }

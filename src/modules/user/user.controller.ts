@@ -64,9 +64,14 @@ export class UserController {
   async webhoock(
     @Body() data: any,
     @Res() res: Response,
-  ): Promise<Response> {
+  ) {
       const webhoockData = await this.paymobService.webhoock(data);
-      return res.status(201).json({ message: 'success', data: webhoockData });
+      if (webhoockData) {
+        return res.redirect('https://fresh-cart-zeta.vercel.app/#/wishlist');
+    } else {
+        return res.redirect('https://fresh-cart-zeta.vercel.app/#/cart');
+    }
+      
   }
  
 }
