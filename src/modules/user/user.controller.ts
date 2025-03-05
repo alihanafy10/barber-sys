@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Put, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -9,10 +9,13 @@ import { ZodValidationPipe } from "../../common/pipes";
 import {  updatePasswordBodyDto, updateUserBodyDto,  } from "./dto";
 import { createFileUploadPipe } from '../../common/utils';
 import { TupdatePasswordBodyDto, TupdateUserBodyDto } from '../../common/types';
+import { PaymobService } from '../../services';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+    private readonly paymobService: PaymobService
+  ) {}
 
   @Put('updateUser')
   @UseInterceptors(FileInterceptor('image'))
@@ -31,7 +34,6 @@ export class UserController {
     return res.status(201).json({ message: 'updated successfully', data });
   }
 
- 
 
   @Put('updatePass')
   @Auth([UserRole.BARBER,UserRole.USER, UserRole.MANAGER])
@@ -45,6 +47,26 @@ export class UserController {
     return res.status(201).json({ message: 'updated successfully'});
   }
 
+  //paymob
+  @Post('create-session')
+  @Auth([UserRole.USER])
+  async createOrder(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<Response> {
+      const authToken = await this.paymobService.getPaymobToken();
+      const sessionData = await this.paymobService.createOrder(authToken,req);
+      return res.status(201).json({ message: 'success', data: sessionData });
+  }
+
+  @Post('webhook-paymob-session')
+  async webhoock(
+    @Body() data: any,
+    @Res() res: Response,
+  ): Promise<Response> {
+      const webhoockData = await this.paymobService.webhoock(data);
+      return res.status(201).json({ message: 'success', data: webhoockData });
+  }
  
 }
 
