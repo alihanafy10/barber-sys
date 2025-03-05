@@ -42,8 +42,8 @@ export class PaymobService {
     }
 
     async webhoock(data:any){
-        if(data.obj.status){
-           const updateData= await this.userModel.findOneAndUpdate( { email: data.obj.order.shipping_data.email }, 
+        if(data.status){
+           const updateData= await this.userModel.findOneAndUpdate( { email: data.order.shipping_data.email }, 
                 {  userRole: UserRole.BARBER  },{new:true})
                 return updateData
         }
