@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { UserModel } from "../../common/schemas";
+import { AdminModel, UserModel } from "../../common/schemas";
 import { PaymobService } from "./paymob.service";
 
 
@@ -8,7 +8,7 @@ import { PaymobService } from "./paymob.service";
 
 
 @Module({
-  imports: [UserModel],
+  imports: [UserModel,AdminModel],
   providers: [PaymobService],
   exports: [PaymobService],
   controllers: [],

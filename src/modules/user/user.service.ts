@@ -83,6 +83,7 @@ export class UserService {
    * update user password
    * @param {TupdatePasswordBodyDto} body
    * @param {any} req - authUser
+   * @returns {void}
    * */
   async updatePass(body: TupdatePasswordBodyDto,req: any):Promise<void> {
     const authUser = req.authUser

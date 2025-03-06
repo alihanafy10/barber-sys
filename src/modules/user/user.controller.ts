@@ -20,7 +20,7 @@ export class UserController {
 
   @Put('updateUser')
   @UseInterceptors(FileInterceptor('image'))
-  @Auth([ UserRole.BARBER, UserRole.MANAGER, UserRole.USER])
+  @Auth([ UserRole.ADMIN, UserRole.MANAGER, UserRole.USER])
   async updateUser(
     @Req() req: Request,
     @Res() res: Response,
@@ -37,7 +37,7 @@ export class UserController {
 
 
   @Put('updatePass')
-  @Auth([UserRole.BARBER,UserRole.USER, UserRole.MANAGER])
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
   async updatePass(
     @Body(new ZodValidationPipe(updatePasswordBodyDto))
     body: TupdatePasswordBodyDto,
@@ -72,12 +72,11 @@ export class UserController {
   
       @Get("webhook-paymob")
       async handleResponseCallback(@Query() query: any, @Res() res: Response) {
-          // تحقق من حالة الدفع باستخدام معلمات الاستعلام
           if (query.success) {
-              // إعادة توجيه إلى صفحة النجاح
+              // success_url
               return res.redirect('https://fresh-cart-zeta.vercel.app/#/wishlist');
           } else {
-              // إعادة توجيه إلى صفحة الفشل
+              // cancel_url
               return res.redirect('https://fresh-cart-zeta.vercel.app/#/cart');
           }
       }

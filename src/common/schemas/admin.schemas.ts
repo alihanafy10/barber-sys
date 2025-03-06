@@ -10,6 +10,11 @@ export class Admin {
         required: true,
       })
       userId: mongoose.Schema.Types.ObjectId;
+      @Prop({
+        type:Boolean,
+        default:false
+      })
+      opened:boolean
 }
 const adminSchema = SchemaFactory.createForClass(Admin)
 
