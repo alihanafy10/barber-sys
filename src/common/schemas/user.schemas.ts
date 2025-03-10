@@ -11,6 +11,7 @@ export class User {
     type: String,
     required: true,
     trim: true,
+    unique:true,
     minlength: 3,
     maxlength: 14,
   })

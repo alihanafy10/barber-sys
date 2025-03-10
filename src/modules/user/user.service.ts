@@ -1,16 +1,18 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { User } from "../../common/schemas";
+import { Admin, User } from "../../common/schemas";
 import { Model } from "mongoose";
 import { CloudinaryService } from "../cloudinary/cloudinary.service";
 import { EmailService } from "../../services/email/email.service";
 import { CheakExisit } from "../../services";
 import { TupdatePasswordBodyDto, TupdateUserBodyDto } from "../../common/types";
+import { UserRole } from "src/common/shared";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Admin.name) private adminModel: Model<Admin>,
     private readonly cloudinaryService: CloudinaryService,
     private readonly emailService: EmailService,
     private readonly cheakExisit:CheakExisit
@@ -91,7 +93,127 @@ export class UserService {
     await authUser.save();
   };
 
+/**
+ * 
+ * @param {string}name 
+ * @throws {BadRequestException}-barber not found
+ * @returns {Admin}
+ */
+  async getAdminByName(name:string):Promise<Admin>{
+    const admin=await this.userModel.findOne({name:name,userRole:UserRole.ADMIN})
+    //cheack if admin found
+    if(!admin) throw new BadRequestException("barber not found")
+      //get admin data
+      const adminData:any=await this.adminModel.findOne({userId:admin._id}).populate("userId")
+    //ignor password
+    adminData.userId.password=undefined
+      
+    return adminData
+  }
 
+  /**
+   * 
+   * @param {Request}req 
+   * @param {string}_id 
+   * 
+   * @throws {BadRequestException}-barber not found
+   * @throws {BadRequestException}-barber is closed now
+   * @throws {BadRequestException}-you are allrady booking
+   * 
+   * @returns {Admin}
+   */
+async bookTicket(req:Request|any,_id:string):Promise<Admin>{
+  const admin:Admin|any=await this.adminModel.findOne({userId:_id}).populate("userId")
+   //cheack if admin found
+   if(!admin) throw new BadRequestException("barber not found")
+   if(!admin.opened)throw new BadRequestException("barber is closed now")
+    //cheick exisit
+  const exisiting:boolean= admin.clints.find((ele: { clintId: { toString: () => any; }; })=>{
+    if(ele.clintId.toString()==req.authUser._id.toString())return true
+  })
+  if(exisiting)throw new BadRequestException("you are allrady booking")
 
+    //bock ticket
+  admin.clints.push({clintId:req.authUser._id})
+  await admin.save()
+  let data = await this.adminModel.findById(admin._id).populate({
+    path: "clints.clintId",
+    select: "-password", 
+  });
+ 
+  return data
+}
+
+ /**
+   * 
+   * @param {Request}req 
+   * @param {string}_id 
+   * 
+   * @throws {BadRequestException}-barber not found
+   * @throws {BadRequestException}-you must open first
+   * 
+   * @returns {Admin}
+   */
+async fackeBookTicket(req:Request|any,name:string):Promise<Admin>{
+  const admin:Admin|any=await this.adminModel.findOne({userId:req.authUser._id}).populate("userId")
+   //cheack if admin found
+   if(!admin) throw new BadRequestException("barber not found")
+   if(!admin.opened)throw new BadRequestException("you must open first")
+
+    //bock ticket
+  admin.clints.push({clintId:req.authUser._id,name})
+  await admin.save()
+  let data = await this.adminModel.findById(admin._id).populate({
+    path: "clints.clintId",
+    select: "-password", 
+  });
+ 
+  return data
+}
+
+/**
+ * 
+ * @param {Request}req 
+ * @throws {BadRequestException}-barber not found
+ * @returns {string}
+ */
+async openAndClose(req:Request|any):Promise<string>{
+  const data=await this.adminModel.findOne({userId:req.authUser._id})
+  if(!data) throw new BadRequestException("barber not found")
+  if(data.opened){
+    data.opened=false
+    data.clints=[]
+    await data.save()
+    return "closed success"
+  }
+  data.opened=true
+  await data.save()
+    return "opend success"
+}
+
+/**
+ * 
+ * @param {Request}req 
+ * @throws {BadRequestException}-barber not found
+ * @returns {Admin}
+ */
+async myWorckSpace(req:Request|any):Promise<Admin>{
+  const data=await this.adminModel.findOne({userId:req.authUser._id}).populate({
+    path: "clints.clintId",
+    select: "-password", 
+  });
+  if(!data) throw new BadRequestException("barber not found")
+  return data
+}
+
+/**
+ * 
+ * @param {Request}req 
+ * @returns {User}
+ */
+async myProfile(req:Request|any):Promise<User>{
+  const data=await this.userModel.findById(req.authUser._id)
+  return data
+}
 
 }

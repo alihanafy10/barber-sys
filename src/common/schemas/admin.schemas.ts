@@ -1,5 +1,6 @@
 import { MongooseModule, Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
+import { Clints } from "./interface";
 
 
 @Schema({ timestamps: true })
@@ -14,7 +15,16 @@ export class Admin {
         type:Boolean,
         default:false
       })
-      opened:boolean
+      opened:boolean;
+      @Prop({
+        type:[
+          {
+            clintId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
+            name:{type:String}
+          }
+        ]
+      })
+      clints: Clints[];
 }
 const adminSchema = SchemaFactory.createForClass(Admin)
 

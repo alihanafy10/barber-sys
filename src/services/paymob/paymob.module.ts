@@ -5,8 +5,6 @@ import { PaymobService } from "./paymob.service";
 
 
 
-
-
 @Module({
   imports: [UserModel,AdminModel],
   providers: [PaymobService],

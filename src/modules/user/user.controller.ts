@@ -6,9 +6,9 @@ import { UserService } from "./user.service";
 import { Auth } from "../../common/decorator";
 import { UserRole } from "../../common/shared";
 import { ZodValidationPipe } from "../../common/pipes";
-import {  updatePasswordBodyDto, updateUserBodyDto,  } from "./dto";
+import {  bookTicketParamsDto, getAdminByNameQueryDto, updatePasswordBodyDto, updateUserBodyDto,  } from "./dto";
 import { createFileUploadPipe } from '../../common/utils';
-import { TupdatePasswordBodyDto, TupdateUserBodyDto } from '../../common/types';
+import { TbookTicketParamsDto, TgetAdminByNameQueryDto, TupdatePasswordBodyDto, TupdateUserBodyDto } from '../../common/types';
 import { PaymobService } from '../../services/paymob/paymob.service';
 
 
@@ -47,6 +47,74 @@ export class UserController {
     await this.userService.updatePass(body, req);
     return res.status(201).json({ message: 'updated successfully'});
   }
+
+  @Post("book-ticket/:_id")
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
+  async bookTicket(
+    @Param(new ZodValidationPipe(bookTicketParamsDto)) param: TbookTicketParamsDto,
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.bookTicket(req,param._id);
+    
+    return res.status(201).json({ message: 'success',data});
+  }
+  @Post("book-ticket")
+  @Auth([UserRole.ADMIN])
+  async fackeBookTicket(
+    @Query(new ZodValidationPipe(getAdminByNameQueryDto)) query: TgetAdminByNameQueryDto,
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.fackeBookTicket(req,query.name);
+    
+    return res.status(201).json({ message: 'success',data});
+  }
+
+@Put("open-and-close")
+@Auth([UserRole.ADMIN])
+async openAndClose(
+  @Req() req:Request,
+  @Res() res: Response
+):Promise<Response> {
+  const data:string=await this.userService.openAndClose(req);
+  
+  return res.status(201).json({ message: data});
+}
+
+  @Get('specific-admin')
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
+  async getAdminByName(
+    @Query(new ZodValidationPipe(getAdminByNameQueryDto))
+    query: TgetAdminByNameQueryDto,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.getAdminByName(query.name);
+    
+    return res.status(200).json({ message: 'success',data});
+  }
+
+  @Get('my-worck-space')
+  @Auth([UserRole.ADMIN])
+  async myWorckSpace(
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.myWorckSpace(req);
+    return res.status(200).json({ message: 'success',data});
+  }
+
+  @Get('profile')
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
+  async myProfile(
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.myProfile(req);
+    data.password=undefined
+    return res.status(200).json({ message: 'success',data});
+  }
+
 
   //paymob
   @Post('create-session')
