@@ -3,9 +3,10 @@ import * as bcrypt from 'bcrypt';
 
 import {  UserProviderType, UserRole } from "../shared";
 import { Image } from "./interface/user.interface";
+import { Wichlist } from "./wichlist.schemas";
 
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true,toJSON:{virtuals: true},toObject:{ virtuals: true }})
 export class User {
   @Prop({
     type: String,
@@ -68,12 +69,20 @@ export class User {
     default: null
   })
   endDateOtp: Date;
+
+  wichlists: Wichlist[];
 }
 const UserSchema = SchemaFactory.createForClass(User)
 
 UserSchema.pre('save', function(next)  {
   this.password = bcrypt.hashSync(this.password, +process.env.SALT);
   next()
+})
+
+UserSchema.virtual("wichlists",{
+  ref:'Wichlist',
+  localField:'_id',
+  foreignField:'adminId'
 })
 
 export const UserModel=MongooseModule.forFeature([{name:User.name,schema:UserSchema}])

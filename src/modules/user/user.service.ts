@@ -7,6 +7,7 @@ import { EmailService } from "../../services/email/email.service";
 import { CheakExisit } from "../../services";
 import { TupdatePasswordBodyDto, TupdateUserBodyDto } from "../../common/types";
 import { UserRole } from "src/common/shared";
+import path from "path";
 
 @Injectable()
 export class UserService {
@@ -100,7 +101,7 @@ export class UserService {
  * @returns {Admin}
  */
   async getAdminByName(name:string):Promise<Admin>{
-    const admin=await this.userModel.findOne({name:name,userRole:UserRole.ADMIN})
+    const admin=await this.userModel.findOne({name:name,userRole:UserRole.ADMIN,isMarkedAsDeleted:false})
     //cheack if admin found
     if(!admin) throw new BadRequestException("barber not found")
       //get admin data
@@ -123,9 +124,11 @@ export class UserService {
    * @returns {Admin}
    */
 async bookTicket(req:Request|any,_id:string):Promise<Admin>{
-  const admin:Admin|any=await this.adminModel.findOne({userId:_id}).populate("userId")
+  const admin:Admin|any=await this.adminModel.findOne({userId:_id}).populate({
+    path:"userId",
+  })
    //cheack if admin found
-   if(!admin) throw new BadRequestException("barber not found")
+   if(!admin||admin.userId.isMarkedAsDeleted) throw new BadRequestException("barber not found")
    if(!admin.opened)throw new BadRequestException("barber is closed now")
     //cheick exisit
   const exisiting:boolean= admin.clints.find((ele: { clintId: { toString: () => any; }; })=>{
@@ -214,6 +217,71 @@ async myWorckSpace(req:Request|any):Promise<Admin>{
 async myProfile(req:Request|any):Promise<User>{
   const data=await this.userModel.findById(req.authUser._id)
   return data
+}
+
+/**
+ * 
+ * @param {Request}req 
+ * @param {string}admin_id 
+ * 
+ * @throws {BadRequestException} -admin not found
+ * 
+ * @returns 
+ */
+async cancelReservationUser(req:any|Request,admin_id:string):Promise<Admin>{
+  //check if admin her
+  const admin:Admin|any=await this.adminModel.findOne({userId:admin_id}).populate([{
+    path: "clints.clintId",
+    select: "-password", 
+  },{
+    path:"userId"
+  }]);
+  if (!admin||admin.userId.isMarkedAsDeleted) throw new BadRequestException("not found");
+
+//delet your Reservation
+  admin.clints=admin.clints.filter(ele=>
+    (ele.clintId as any)._id.toString()!=req.authUser._id.toString()
+)
+
+//save data
+const data=await admin.save()
+return data
+}
+
+/**
+ * 
+ * @param {Request}req 
+ * @param {string}admin_id 
+ * 
+ * @throws {BadRequestException} -clint not found
+ * 
+ * @returns 
+ */
+async cancelReservationAdmin(req:any|Request,clint_id:string):Promise<Admin>{
+  //check if clint booking
+  const admin:Admin|any=await this.adminModel.findOne({userId:req.authUser._id,"clints._id":clint_id}).populate([{
+    path: "clints.clintId",
+    select: "-password", 
+  },{
+    path:"userId"
+  }]);
+  if (!admin) throw new BadRequestException("clint not found");
+
+//delet Reservation
+  admin.clints=admin.clints.filter((ele:any)=>
+    ele._id.toString()!=clint_id.toString()
+)
+
+//save data
+const data=await admin.save()
+return data
+}
+/**
+ * 
+ * @param {Request}req 
+ */
+async deleteAcc(req:Request|any):Promise<void>{
+await this.userModel.updateOne({_id:req.authUser._id},{isMarkedAsDeleted:true})
 }
 
 }

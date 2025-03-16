@@ -115,6 +115,38 @@ async openAndClose(
     return res.status(200).json({ message: 'success',data});
   }
 
+  @Put('cancel-reservation-user/:_id')
+  @Auth([UserRole.USER])
+  async cancelReservationUser(
+    @Param(new ZodValidationPipe(bookTicketParamsDto)) param: TbookTicketParamsDto,
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.cancelReservationUser(req,param._id);
+    return res.status(201).json({ message: 'success',data});
+  }
+
+  @Put('cancel-reservation-admin/:_id')
+  @Auth([UserRole.ADMIN])
+  async cancelReservationAdmin(
+    @Param(new ZodValidationPipe(bookTicketParamsDto)) param: TbookTicketParamsDto,
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response> {
+    const data=await this.userService.cancelReservationAdmin(req,param._id);
+    return res.status(201).json({ message: 'success',data});
+  }
+
+  @Delete("deleteAcc")
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
+  async deleteAcc(
+    @Req() req:Request,
+    @Res() res: Response
+  ):Promise<Response>{
+    await this.userService.deleteAcc(req);
+    return res.status(201).json({ message: 'delete successfully'});
+  }
+
 
   //paymob
   @Post('create-session')
