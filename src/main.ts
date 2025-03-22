@@ -7,7 +7,7 @@ import { AllExceptionsFilter } from './common/filters';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: '*', // السماح فقط لـ React
+    origin: 'http://localhost:3000', // السماح فقط لـ React
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true, // السماح بالكوكيز والتوكن
