@@ -5,7 +5,14 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule,{ cors: true });
+  const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: '*',
+    credentials: true,
+  });
+  
   const port = process.env.PORT || 3000
   //global validationPipe
   app.useGlobalPipes(new ValidationPipe({
