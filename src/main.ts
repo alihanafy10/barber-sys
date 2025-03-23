@@ -6,12 +6,7 @@ import { AllExceptionsFilter } from './common/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: ['http://localhost:3000', 'https://barber-sys1.vercel.app'], // السماح بالـ Frontend المحلي والمرفوع
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-    credentials: true,
-  });
+  app.enableCors({origin:"*"});
   
   const port = process.env.PORT || 3000
   //global validationPipe
