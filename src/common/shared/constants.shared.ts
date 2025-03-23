@@ -39,10 +39,6 @@ export const verifiedHtml= () => {
         
         <div style="font-size: 18px; margin-bottom: 20px;">Your email has been successfully verified! You can now sign in.</div>
         
-        <a href="http://localhost:3000/signin" 
-           style="display: inline-block; padding: 12px 24px; font-size: 16px; color: #fff; background: #2563EB; border: none; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);">
-           Go to Sign In
-        </a>
     </div>
 `;
 }
