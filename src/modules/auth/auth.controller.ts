@@ -18,6 +18,7 @@ import { createFileUploadPipe } from '../../common/utils';
 import { ZodValidationPipe } from '../../common/pipes';
 import { forgetPasswordBodyDto, resetPasswordBodyDto, signInBodyDto, signUpBodyDto  } from './dto';
 import { TforgetPasswordBodyDto, TresetPasswordBodyDto, TsignInBodyDto, TsignUpBodyDto } from '../../common/types';
+import { verifiedHtml } from '../../common/shared';
 
 @Controller('auth')
 export class AuthController {
@@ -46,7 +47,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<Response> {
     await this.authService.verifyEmaill(token);
-    return res.status(200).json({ message: 'Verified email successfully' });
+    return res.status(200).send(verifiedHtml());
   }
 
   @Post('signin')

@@ -30,3 +30,20 @@ export const generalRules = {
 }
 
 
+export const verifiedHtml= () => {
+	return ` <div style="background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); width: 90%; margin:40px auto ;">
+        
+        <div style="font-size: 60px; color: #fff; margin-bottom: 15px;">🎉</div>
+        
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">Email Verified Successfully</div>
+        
+        <div style="font-size: 18px; margin-bottom: 20px;">Your email has been successfully verified! You can now sign in.</div>
+        
+        <a href="http://localhost:3000/signin" 
+           style="display: inline-block; padding: 12px 24px; font-size: 16px; color: #fff; background: #2563EB; border: none; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);">
+           Go to Sign In
+        </a>
+    </div>
+`;
+}
+
