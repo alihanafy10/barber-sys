@@ -8,9 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: ['http://localhost:3000','https://barber-sys1.vercel.app'],
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: '*',
     credentials: true,
+    optionSuccessStatus:200
   });
   
   const port = process.env.PORT || 3000
