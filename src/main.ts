@@ -7,7 +7,7 @@ import { AllExceptionsFilter } from './common/filters';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ["http://localhost:3000", "https://barber-sys.vercel.app"], // استبدلها بنطاق الواجهة الأمامية
+    origin: "*", // استبدلها بنطاق الواجهة الأمامية
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
