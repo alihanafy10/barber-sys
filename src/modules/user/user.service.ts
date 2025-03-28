@@ -201,7 +201,7 @@ async openAndClose(req:Request|any):Promise<string>{
  * @returns {Admin}
  */
 async worckSpace(_id:string):Promise<Admin>{
-  const data=await this.adminModel.findOne({_id}).populate([{
+  const data=await this.adminModel.findOne({userId:_id}).populate([{
     path: "clints.clintId",
     select: "-password", 
   },
