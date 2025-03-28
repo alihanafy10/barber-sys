@@ -196,12 +196,12 @@ async openAndClose(req:Request|any):Promise<string>{
 
 /**
  * 
- * @param {Request}req 
+ * @param {string}_id 
  * @throws {BadRequestException}-barber not found
  * @returns {Admin}
  */
-async myWorckSpace(req:Request|any):Promise<Admin>{
-  const data=await this.adminModel.findOne({userId:req.authUser._id}).populate({
+async worckSpace(_id:string):Promise<Admin>{
+  const data=await this.adminModel.findOne({_id}).populate({
     path: "clints.clintId",
     select: "-password", 
   });

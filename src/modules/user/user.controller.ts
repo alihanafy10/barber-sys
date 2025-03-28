@@ -94,13 +94,13 @@ async openAndClose(
     return res.status(200).json({ message: 'success',data});
   }
 
-  @Get('my-worck-space')
-  @Auth([UserRole.ADMIN])
-  async myWorckSpace(
-    @Req() req:Request,
+  @Get('worck-space/:_id')
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
+  async worckSpace(
+    @Param(new ZodValidationPipe(bookTicketParamsDto)) param: TbookTicketParamsDto,
     @Res() res: Response
   ):Promise<Response> {
-    const data=await this.userService.myWorckSpace(req);
+    const data=await this.userService.worckSpace(param._id);
     return res.status(200).json({ message: 'success',data});
   }
 
