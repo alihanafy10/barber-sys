@@ -201,10 +201,14 @@ async openAndClose(req:Request|any):Promise<string>{
  * @returns {Admin}
  */
 async worckSpace(_id:string):Promise<Admin>{
-  const data=await this.adminModel.findOne({_id}).populate({
+  const data=await this.adminModel.findOne({_id}).populate([{
     path: "clints.clintId",
     select: "-password", 
-  });
+  },
+{
+  path:"userId",
+  select:"-password"
+}]);
   if(!data) throw new BadRequestException("barber not found")
   return data
 }
