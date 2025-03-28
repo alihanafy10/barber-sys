@@ -116,7 +116,7 @@ async openAndClose(
   }
 
   @Put('cancel-reservation-user/:_id')
-  @Auth([UserRole.USER])
+  @Auth([UserRole.ADMIN,UserRole.USER, UserRole.MANAGER])
   async cancelReservationUser(
     @Param(new ZodValidationPipe(bookTicketParamsDto)) param: TbookTicketParamsDto,
     @Req() req:Request,
