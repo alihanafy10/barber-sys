@@ -62,9 +62,7 @@ export class WichlistService{
      */
     async deleteFromWichlist(req:Request|any,wichlistId:string):Promise<any>{
         const data:any=await this.wichlistModel.deleteMany({_id:wichlistId,userId:req.authUser._id})
-
         if(!data.deletedCount)throw new BadRequestException("can not delete")
-            
         return data
 
     }
