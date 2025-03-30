@@ -174,10 +174,10 @@ async openAndClose(
       async handleResponseCallback(@Query() query: any, @Res() res: Response) {
           if (query.success) {
               // success_url
-              return res.redirect('https://fresh-cart-zeta.vercel.app/#/wishlist');
+              return res.redirect('https://localhost:3000/signin');
           } else {
               // cancel_url
-              return res.redirect('https://fresh-cart-zeta.vercel.app/#/cart');
+              return res.redirect('https://localhost:3000/home');
           }
       }
   
