@@ -10,7 +10,7 @@ export class PaymobService {
         @InjectModel(User.name) private userModel: Model<User>,
         @InjectModel(Admin.name) private adminModel: Model<Admin>,
     ) {}
-    private readonly apiKey = process.env.API_KEY;
+    
 
     /**
      * @returns {Promise<string>} token
@@ -19,7 +19,7 @@ export class PaymobService {
         const response = await fetch('https://accept.paymob.com/api/auth/tokens', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ api_key: this.apiKey })
+            body: JSON.stringify({ api_key: process.env.API_KEY })
         });
         
         const data = await response.json();
