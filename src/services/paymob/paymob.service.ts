@@ -33,8 +33,7 @@ export class PaymobService {
      * @returns {any} order
      * */
     async createOrder(paymobToken: string, req: any|Request):Promise<any>{
-        const response = await axios.post('https://accept.paymob.com/api/ecommerce/orders', 
-            JSON.stringify({
+        const response = await axios.post('https://accept.paymob.com/api/ecommerce/orders', {
             auth_token: paymobToken,
             "api_source": "INVOICE",
             "amount_cents": "100000",
@@ -49,7 +48,7 @@ export class PaymobService {
                 5000678,
                 5002535
             ]
-        }));
+        });
         return response.data; 
     }
 
