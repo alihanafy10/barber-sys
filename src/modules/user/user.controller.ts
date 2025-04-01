@@ -156,6 +156,7 @@ async openAndClose(
     @Res() res: Response,
   ): Promise<Response> {
       const authToken = await this.paymobService.getPaymobToken();
+     console.log(authToken);
      
       
       const sessionData = await this.paymobService.createOrder(authToken,req);
