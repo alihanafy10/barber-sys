@@ -21,6 +21,7 @@ export class PaymobService {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ api_key: process.env.PAYMOB_API_KEY })
         });
+        console.log(response);
         
         const data = await response.json();
        
