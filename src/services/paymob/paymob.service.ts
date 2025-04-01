@@ -21,7 +21,10 @@ export class PaymobService {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ api_key: this.apiKey })
         });
+        
         const data = await response.json();
+        console.log(data);
+        
         return data.token;
     }
 
