@@ -24,7 +24,7 @@ export class PaymobService {
         
         const data = await response.json();
        
-        
+        console.log("🚀 Paymob Token:", data.token);
         return data.token;
     }
 
