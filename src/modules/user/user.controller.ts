@@ -159,8 +159,8 @@ async openAndClose(
      
      
       
-      const sessionData = await this.paymobService.createOrder(authToken,req);
-      return res.status(201).json({ message: 'success', data: sessionData });
+      // const sessionData = await this.paymobService.createOrder(authToken,req);
+      return res.status(201).json({ message: 'success', data: authToken });
   }
 
   @Post('webhook-paymob-session')
