@@ -10,23 +10,23 @@ export class PaymobService {
         @InjectModel(User.name) private userModel: Model<User>,
         @InjectModel(Admin.name) private adminModel: Model<Admin>,
     ) {}
-    
+    private readonly apiKey = process.env.PAYMOB_API_KEY;
 
     /**
      * @returns {Promise<string>} token
      */
-    async getPaymobToken(): Promise<string> {
+    async getPaymobToken() {
         const response = await fetch('https://accept.paymob.com/api/auth/tokens', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ api_key: process.env.PAYMOB_API_KEY })
+            body: JSON.stringify({ api_key: this.apiKey })
         });
-        console.log(response);
         
-        const data = await response.json();
+        // const data = await response.json();
        
-        console.log("🚀 Paymob Token:", data.token);
-        return data.token;
+        // console.log("🚀 Paymob Token:", data.token);
+        // return data.token;
+        return response
     }
 
     /**
