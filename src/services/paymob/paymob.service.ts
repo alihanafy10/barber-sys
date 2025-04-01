@@ -16,7 +16,7 @@ export class PaymobService {
      * @returns {Promise<string>} token
      */
 
-    async getPaymobToken() {
+    async getPaymobToken():Promise<string> {
         const response = await fetch('https://accept.paymob.com/api/auth/tokens', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
