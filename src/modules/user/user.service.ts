@@ -101,11 +101,17 @@ export class UserService {
  * @returns {Admin}
  */
   async getAdminByName(name:string):Promise<Admin>{
+    
+    
     const admin=await this.userModel.findOne({name:name,userRole:UserRole.ADMIN,isMarkedAsDeleted:false})
+    
+    
     //cheack if admin found
     if(!admin) throw new BadRequestException("barber not found")
       //get admin data
       const adminData:any=await this.adminModel.findOne({userId:admin._id}).populate("userId")
+      console.log(adminData);
+      
     //ignor password
     adminData.userId.password=undefined
       
