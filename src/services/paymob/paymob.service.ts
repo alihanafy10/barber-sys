@@ -19,7 +19,7 @@ export class PaymobService {
         const response = await fetch('https://accept.paymob.com/api/auth/tokens', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ api_key: process.env.API_KEY })
+            body: JSON.stringify({ api_key: process.env.PAYMOB_API_KEY })
         });
         
         const data = await response.json();
