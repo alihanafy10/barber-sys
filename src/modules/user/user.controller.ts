@@ -159,8 +159,8 @@ async openAndClose(
      
      
       
-      // const sessionData = await this.paymobService.createOrder(authToken,req);
-      return res.status(201).json({ message: 'success', data: authToken });
+      const sessionData = await this.paymobService.createOrder(authToken,req);
+      return res.status(201).json({ message: 'success', data: sessionData });
   }
 
   @Post('webhook-paymob-session')
@@ -177,10 +177,10 @@ async openAndClose(
       async handleResponseCallback(@Query() query: any, @Res() res: Response) {
           if (query.success) {
               // success_url
-              return res.redirect('https://localhost:3000/signin');
+              return res.redirect('http://localhost:3000/signin');
           } else {
               // cancel_url
-              return res.redirect('https://localhost:3000/home');
+              return res.redirect('http://localhost:3000/home');
           }
       }
   
